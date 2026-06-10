@@ -3,8 +3,8 @@ from string import punctuation
 import nltk
 from nltk.corpus import stopwords
 class Libro:
+    
     def __init__(self, name, filename) -> None:
-        """Crear atributos públicos """
         # Asignamos a través de las propiedades para activar las validaciones
         self.name = name
         self.filename = filename

@@ -1,10 +1,6 @@
 from libros import crear_lista_libros_ingles
 from recomendaciones import Recomendador
-
-
-def separador():
-    print("\n" + "=" * 50 + "\n")
-
+from get_books import get_links, store_files
 
 def pedir_indice_valido(total):
     while True:
@@ -27,10 +23,30 @@ def main():
     print("\n  ⁺‧₊˚RECOMENDACIONES DE LIBROS DE GUTENBERG˚₊‧⁺˖   \n")
     print("𖹭" * 60)
     print("Este programa analiza libros para darte resumenes ")
-    print("o recomendarte libros similares basados en tus gustos.\n")
+    print("o recomendarte libros similares basados en tus gustos \n")
     
     print("𖹭" * 60)
-    directorio = input(" Ingresa la ruta al directorio con los libros: ").strip()
+    print(" Ya tienes libros descargados o deseas descargarlos?\n")
+    print(" ❥ [1] Ya tengo libros en un directorio")
+    print(" ❥ [2] Descargar libros del Proyecto Gutenberg")
+    descarga = input("Opcion: ").strip()
+
+    if descarga == "2":
+        directorio = input(" Directorio donde guardar los libros (ej: Books): ").strip()
+        n_input = input(" ¿Cuántos libros descargar? (numero o 'todos'): ").strip()
+        if n_input.lower() == "todos":
+            n = -1
+        elif n_input.isdigit():
+            n = list(range(1, int(n_input) + 1))
+        else:
+            print(" Entrada inválida, se descargarán los primeros 5.")
+            n = list(range(1, 6))
+        print(" Descargando libros, espera un momento...")
+        links, titles = get_links(n)
+        store_files(links, [t + ".txt" for t in titles], directorio)
+        print(" Descarga completada! ")
+    else:
+        directorio = input(" Ingresa la ruta al directorio con los libros: ").strip()
     print("𖹭" * 60)
 
     print("  Cargando libros...")
@@ -45,8 +61,9 @@ def main():
     recomendador.set_pesos()
     print(f" {len(libros)} libros cargados exitosamente.")
 
-    separador()
-    print("  ¿Qué deseas hacer?\n")
+    print("𖹭" * 60)
+
+    print("\n 𖹭 Que deseas hacer? 𖹭 \n")
     print("  ❥ [1] Ver libros disponibles")
     print("  ❥ [2] Ver resumen de un libro")
     print("  ❥ [3] Ver libros similares a uno dado")
@@ -68,7 +85,7 @@ def main():
 
         print()
         indice = pedir_indice_valido(len(libros))
-        n = pedir_entero_positivo("¿Cuántas palabras clave deseas ver?")
+        n = pedir_entero_positivo("Cuantas palabras clave deseas ver?")
 
         palabras = recomendador.resumen(indice, n)
         libro = libros[indice]
