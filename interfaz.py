@@ -16,7 +16,7 @@ def pedir_indice_valido(total):
 
 def pedir_entero_positivo(mensaje):
     while True:
-        n = input(f"  → {mensaje}: ").strip()
+        n = input(f"  {mensaje}: ").strip()
         if n.isdigit() and int(n) > 0:
             return int(n)
         print("ingresa un numero mayor a 0")
